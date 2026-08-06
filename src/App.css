@@ -2,92 +2,109 @@
    VARIABLES GLOBALES Y TEMAS
    ========================================== */
 :root {
-  /* Paleta Principal (Mañana/Default) */
-  --color-texto: #634C22;
-  --color-bordes: #E6B15D;
-  --color-fondo: #F3ECD0;
-  --color-sombras: #C0C9B8;
-  --color-adicional: #FEE197;
+    /* Paleta Principal (Mañana/Default) */
+    --color-texto: #634C22;
+    --color-bordes: #E6B15D;
+    --color-fondo: #F3ECD0;
+    --color-sombras: #C0C9B8;
+    --color-adicional: #FEE197;
 
-  /* Colores Funcionales (Invariables por turno) */
-  --color-transferencia: #64B5F6;
-  --color-efectivo: #1CDB1C;
-  --color-btn-vender: #21ED32;
-  --color-eliminar-item: #EEA70F;
-  --color-vaciar-carrito: #FF1919;
-  --color-btn-atras: #F21313;
-  --color-input-fondo: #FDF6F6;
+    /* Colores Funcionales (Invariables por turno) */
+    --color-transferencia: #64B5F6;
+    --color-efectivo: #1CDB1C;
+    --color-btn-vender: #21ED32;
+    --color-eliminar-item: #EEA70F;
+    --color-vaciar-carrito: #FF1919;
+    --color-btn-atras: #F21313;
+    --color-input-fondo: #FDF6F6;
 
-  /* Paleta temporal para Categorías */
-  --color-cat-1: #E53935; /* Rojo */
-  --color-cat-2: #1E88E5; /* Azul */
-  --color-cat-3: #43A047; /* Verde */
-  --color-cat-4: #FDD835; /* Amarillo */
-  --color-cat-5: #D81B60; /* Rosa */
+    /* Paleta temporal para Categorías */
+    --color-cat-1: #E53935;
+    /* Rojo */
+    --color-cat-2: #1E88E5;
+    /* Azul */
+    --color-cat-3: #43A047;
+    /* Verde */
+    --color-cat-4: #FDD835;
+    /* Amarillo */
+    --color-cat-5: #D81B60;
+    /* Rosa */
 }
 
 /* Tema Tarde */
 [data-theme="tarde"] {
-  /* TODO: Decisión pendiente - Mapeo de colores Tarde */
-  --color-texto: #392033; /* Asignación temporal */
-  --color-bordes: #FF8866; /* Asignación temporal */
-  --color-fondo: #FFE577; /* Asignación temporal */
-  --color-sombras: #FEC051; /* Asignación temporal */
-  --color-adicional: #FD6051; /* Asignación temporal */
+    /* TODO: Decisión pendiente - Mapeo de colores Tarde */
+    --color-texto: #392033;
+    /* Asignación temporal */
+    --color-bordes: #FF8866;
+    /* Asignación temporal */
+    --color-fondo: #FFE577;
+    /* Asignación temporal */
+    --color-sombras: #FEC051;
+    /* Asignación temporal */
+    --color-adicional: #FD6051;
+    /* Asignación temporal */
 }
 
 /* Tema Noche */
 [data-theme="noche"] {
-  /* TODO: Decisión pendiente - Mapeo de colores Noche */
-  --color-texto: #BBD5F0; /* Asignación temporal */
-  --color-bordes: #0971A6; /* Asignación temporal */
-  --color-fondo: #000B0F; /* Asignación temporal */
-  --color-sombras: #052033; /* Asignación temporal */
-  --color-adicional: #00345C; /* Asignación temporal */
+    /* TODO: Decisión pendiente - Mapeo de colores Noche */
+    --color-texto: #BBD5F0;
+    /* Asignación temporal */
+    --color-bordes: #0971A6;
+    /* Asignación temporal */
+    --color-fondo: #000B0F;
+    /* Asignación temporal */
+    --color-sombras: #052033;
+    /* Asignación temporal */
+    --color-adicional: #00345C;
+    /* Asignación temporal */
 }
 
 /* ==========================================
    RESET Y ESTILOS BASE (Mobile First)
    ========================================== */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
-  transition: background-color 0.4s ease, color 0.4s ease;
-  min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    min-height: 100vh;
 }
 
 /* Transiciones suaves para los elementos que cambian con el turno */
 .app {
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* ==========================================
    LAYOUT GENERAL (Mobile First)
    ========================================== */
 .layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 600px; /* Restringe el ancho máximo en PC para mantener el aspecto Mobile */
-  margin: 0 auto; /* Centra la app en pantallas grandes */
-  background-color: var(--color-fondo);
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 600px;
+    /* Restringe el ancho máximo en PC para mantener el aspecto Mobile */
+    margin: 0 auto;
+    /* Centra la app en pantallas grandes */
+    background-color: var(--color-fondo);
+    position: relative;
 }
 
 .layout__main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
 }
 
 /* 
@@ -96,338 +113,510 @@ body {
 */
 /* --- HEADER Y BOTÓN ATRÁS --- */
 .header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    position: relative;
 }
 
 .header__title {
-  flex: 1;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-texto);
+    flex: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-texto);
 }
 
 .btn-back {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-btn-atras);
-  color: var(--color-btn-atras);
-  border-radius: 8px;
-  padding: 0.25rem 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 2px 2px 4px rgba(242, 19, 19, 0.2); /* Sombra suave roja */
-  position: absolute;
-  left: 0;
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-btn-atras);
+    color: var(--color-btn-atras);
+    border-radius: 8px;
+    padding: 0.25rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(242, 19, 19, 0.2);
+    /* Sombra suave roja */
+    position: absolute;
+    left: 0;
 }
 
 /* --- BOTÓN ESTÁNDAR --- */
 .btn {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-bordes);
-  color: var(--color-texto);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 2px 2px 0px var(--color-sombras);
-  transition: transform 0.1s ease;
-  width: 100%; /* Mobile First: Ocupa todo el ancho disponible */
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-bordes);
+    color: var(--color-texto);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 2px 2px 0px var(--color-sombras);
+    transition: transform 0.1s ease;
+    width: 100%;
+    /* Mobile First: Ocupa todo el ancho disponible */
 }
 
 .btn:active {
-  transform: translateY(2px);
-  box-shadow: 0px 0px 0px var(--color-sombras);
+    transform: translateY(2px);
+    box-shadow: 0px 0px 0px var(--color-sombras);
 }
 
 /* Variantes de botones */
 .btn--vender {
-  background-color: var(--color-btn-vender);
-  border-color: var(--color-btn-vender);
-  color: #000;
-  font-size: 1.25rem;
-  padding: 1rem;
+    background-color: var(--color-btn-vender);
+    border-color: var(--color-btn-vender);
+    color: #000;
+    font-size: 1.25rem;
+    padding: 1rem;
 }
 
 .btn--vaciar {
-  background-color: var(--color-vaciar-carrito);
-  border-color: var(--color-vaciar-carrito);
-  color: #FFF;
+    background-color: var(--color-vaciar-carrito);
+    border-color: var(--color-vaciar-carrito);
+    color: #FFF;
 }
 
 .btn--eliminar {
-  background-color: var(--color-eliminar-item);
-  border-color: var(--color-eliminar-item);
-  color: #FFF;
+    background-color: var(--color-eliminar-item);
+    border-color: var(--color-eliminar-item);
+    color: #FFF;
 }
 
 .btn--transferencia {
-  background-color: var(--color-transferencia);
-  border-color: var(--color-transferencia);
-  color: #000;
+    background-color: var(--color-transferencia);
+    border-color: var(--color-transferencia);
+    color: #000;
 }
 
 .btn--efectivo {
-  background-color: var(--color-efectivo);
-  border-color: var(--color-efectivo);
-  color: #000;
+    background-color: var(--color-efectivo);
+    border-color: var(--color-efectivo);
+    color: #000;
 }
 
 /* --- BOTÓN DE CATEGORÍA --- */
 .cat-btn {
-  background-color: var(--color-fondo);
-  border: 2px solid;
-  border-radius: 8px;
-  padding: 0.5rem;
-  font-weight: 700;
-  font-size: 1.2rem;
-  text-align: center;
-  cursor: pointer;
+    background-color: var(--color-fondo);
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: center;
+    cursor: pointer;
 }
 
 /* Clases modificadoras para evadir el uso de estilos inline */
-.cat-btn--1 { border-color: var(--color-cat-1); color: var(--color-cat-1); }
-.cat-btn--2 { border-color: var(--color-cat-2); color: var(--color-cat-2); }
-.cat-btn--3 { border-color: var(--color-cat-3); color: var(--color-cat-3); }
-.cat-btn--4 { border-color: var(--color-cat-4); color: var(--color-cat-4); }
-.cat-btn--5 { border-color: var(--color-cat-5); color: var(--color-cat-5); }
+.cat-btn--1 {
+    border-color: var(--color-cat-1);
+    color: var(--color-cat-1);
+}
+
+.cat-btn--2 {
+    border-color: var(--color-cat-2);
+    color: var(--color-cat-2);
+}
+
+.cat-btn--3 {
+    border-color: var(--color-cat-3);
+    color: var(--color-cat-3);
+}
+
+.cat-btn--4 {
+    border-color: var(--color-cat-4);
+    color: var(--color-cat-4);
+}
+
+.cat-btn--5 {
+    border-color: var(--color-cat-5);
+    color: var(--color-cat-5);
+}
 
 /* --- INPUTS --- */
 .input {
-  background-color: var(--color-input-fondo);
-  border: 1px solid var(--color-bordes);
-  color: var(--color-texto);
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  width: 100%;
-  outline: none;
+    background-color: var(--color-input-fondo);
+    border: 1px solid var(--color-bordes);
+    color: var(--color-texto);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    outline: none;
 }
 
 .input:focus {
-  border-color: var(--color-texto);
+    border-color: var(--color-texto);
 }
+
 /* ==========================================
    VISTA: HOME
    ========================================== */
 .home {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .home__menu {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 /* Tarjeta del gráfico */
 .home__chart-card {
-  border: 2px solid var(--color-bordes);
-  border-radius: 8px;
-  padding: 1rem;
-  background-color: var(--color-fondo);
-  box-shadow: 2px 2px 4px var(--color-sombras);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    border: 2px solid var(--color-bordes);
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: var(--color-fondo);
+    box-shadow: 2px 2px 4px var(--color-sombras);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .home__chart-container {
-  height: 250px;
-  width: 100%;
+    height: 250px;
+    width: 100%;
 }
 
 /* Leyenda del gráfico */
 .home__legend {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .home__legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
-  color: var(--color-texto);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: var(--color-texto);
 }
 
 .home__legend-color {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 2px;
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 2px;
 }
 
-.home__legend-color--efectivo { background-color: var(--color-efectivo); }
-.home__legend-color--transferencia { background-color: var(--color-transferencia); }
+.home__legend-color--efectivo {
+    background-color: var(--color-efectivo);
+}
+
+.home__legend-color--transferencia {
+    background-color: var(--color-transferencia);
+}
 
 /* Cajas de totales */
 .home__totals {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .home__totals-row {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .home__total-box {
-  flex: 1;
-  padding: 0.5rem;
-  color: #fff;
-  font-weight: 600;
-  text-align: left;
-  border-radius: 4px;
+    flex: 1;
+    padding: 0.5rem;
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    border-radius: 4px;
 }
 
-.home__total-box--efectivo { background-color: var(--color-efectivo); }
-.home__total-box--transferencia { background-color: var(--color-transferencia); }
+.home__total-box--efectivo {
+    background-color: var(--color-efectivo);
+}
+
+.home__total-box--transferencia {
+    background-color: var(--color-transferencia);
+}
 
 .home__grand-total {
-  background-color: var(--color-bordes);
-  color: var(--color-texto);
-  padding: 0.5rem;
-  font-weight: 700;
-  text-align: center;
-  border-radius: 4px;
+    background-color: var(--color-bordes);
+    color: var(--color-texto);
+    padding: 0.5rem;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 4px;
 }
+
 /* ==========================================
    NUEVAS VARIANTES DE BOTONES
    ========================================== */
 /* Botón Ambos (Borde degradado sin estilos inline) */
 .btn--ambos {
-  background: linear-gradient(var(--color-fondo), var(--color-fondo)) padding-box,
-              linear-gradient(to right, var(--color-transferencia), var(--color-efectivo)) border-box;
-  border: 2px solid transparent;
-  color: var(--color-texto);
+    background: linear-gradient(var(--color-fondo), var(--color-fondo)) padding-box,
+        linear-gradient(to right, var(--color-transferencia), var(--color-efectivo)) border-box;
+    border: 2px solid transparent;
+    color: var(--color-texto);
 }
 
 /* Botones de Turno */
 .shift-btn {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-bordes);
-  color: var(--color-texto);
-  border-radius: 8px;
-  padding: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 2px 2px 0px var(--color-sombras);
-  flex: 1;
-  text-align: center;
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-bordes);
+    color: var(--color-texto);
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--color-sombras);
+    flex: 1;
+    text-align: center;
 }
 
 .shift-btn--active {
-  background-color: var(--color-bordes);
-  color: var(--color-fondo); /* Texto invertido para contrastar */
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2); /* Sombra interior de presionado */
+    background-color: var(--color-bordes);
+    color: var(--color-fondo);
+    /* Texto invertido para contrastar */
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra interior de presionado */
 }
 
 /* ==========================================
    VISTA: VENTAS
    ========================================== */
 .ventas {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 1rem;
 }
 
 /* Cabecera específica de ventas */
 .ventas__header-row {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  margin-bottom: 2vh;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    margin-bottom: 2vh;
 }
 
 .ventas__shifts {
-  display: flex;
-  gap: 0.5rem;
-  flex: 1;
-  margin-left: 3rem; /* Espacio para el botón Atrás que es absoluto */
+    display: flex;
+    gap: 0.5rem;
+    flex: 1;
+    margin-left: 3rem;
+    /* Espacio para el botón Atrás que es absoluto */
 }
 
 /* Acciones del carrito */
 .ventas__cart-actions {
-  display: flex;
-  justify-content: space-between;
-    
-  
+    display: flex;
+    justify-content: space-between;
+    column-gap: 3rem;
+
 }
 
 /* Contenedor principal dividido */
 .ventas__main {
-  display: flex;
-  gap: 1rem;
-  flex: 1;
-  overflow: hidden; /* Para que el scroll sea interno si hay muchos items */
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+    overflow: hidden;
+    /* Para que el scroll sea interno si hay muchos items */
 }
 
 .ventas__categories {
-  flex: 0 0 40%;
-  height: 35vh;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow-y: auto;
+    flex: 0 0 40%;
+    height: 35vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
 }
 
 .ventas__products {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  align-content: start;
-  height: 35vh;
-  overflow-y: auto;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    align-content: start;
+    height: 35vh;
+    overflow-y: auto;
 }
 
 /* Producto individual */
 .ventas__product-btn {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-cat-1); /* Color por defecto, se sobrescribe con las clases cat-btn--X */
-  color: var(--color-cat-1);
-  border-radius: 8px;
-  padding: 0.5rem;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-cat-1);
+    /* Color por defecto, se sobrescribe con las clases cat-btn--X */
+    color: var(--color-cat-1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Footer de pagos */
 .ventas__footer {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: auto;
-  padding-top: 1rem;
-  border-top: 2px solid var(--color-bordes);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-bordes);
 }
 
 .ventas__methods {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .ventas__total-text {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-texto);
+}
+/* ==========================================
+   VISTA: STOCK
+   ========================================== */
+.stock {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+/* Cabecera extendida para Stock */
+.stock__header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  gap: 0.5rem;
+}
+
+.stock__main-title {
   text-align: center;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-texto);
+  border-bottom: 2px solid var(--color-texto);
+  padding-bottom: 0.5rem;
+  margin: 1rem 0;
+}
+
+/* Grilla de productos */
+.stock__category-title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.stock__subcategory-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+.stock__grid-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.2fr auto;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--color-texto);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.stock__grid-header span:first-child {
+  text-align: left;
+}
+
+.stock__row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.2fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.stock__name {
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+/* Contenedor del precio para ubicar el signo $ */
+.stock__price-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Inputs específicos de stock (Cajas blancas) */
+.input--stock {
+  text-align: center;
+  padding: 0.25rem;
+}
+
+/* Botón Editar (Cuadrado dorado) */
+.btn-edit {
+  background-color: var(--color-fondo);
+  border: 2px solid var(--color-bordes);
+  color: var(--color-texto);
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-edit .material-icons {
+  font-size: 1.2rem;
+}
+
+/* --- INPUTS INLINE (Creación rápida) --- */
+.inline-form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  align-items: center;
+}
+
+.btn-inline {
+  background-color: var(--color-fondo);
+  border: 2px solid var(--color-bordes);
+  color: var(--color-texto);
+  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn-inline--accept {
+  border-color: var(--color-btn-vender);
+  color: var(--color-btn-vender);
+}
+
+.btn-inline--cancel {
+  border-color: var(--color-vaciar-carrito);
+  color: var(--color-vaciar-carrito);
 }
