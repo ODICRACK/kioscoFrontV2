@@ -364,7 +364,8 @@ body {
   display: flex;
   justify-content: space-between;
   column-gap: 7rem;
-  margin-bottom: 2vh;
+
+  
 }
 
 /* Contenedor principal dividido */
