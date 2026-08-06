@@ -13,7 +13,9 @@ const BackButton = ({ onClick }) => {
 
   return (
     <button className="btn-back" onClick={handleClick} type="button">
-      <span className="material-icons">arrow_back</span>
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
     </button>
   );
 };

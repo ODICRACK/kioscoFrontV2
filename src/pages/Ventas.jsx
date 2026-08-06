@@ -67,11 +67,19 @@ const Ventas = () => {
           <CategoryButton name="Jugos" colorIndex={3} />
           <CategoryButton name="Snacks" colorIndex={4} />
           <CategoryButton name="Galletas" colorIndex={5} />
+          <CategoryButton name="Galletas" colorIndex={5} />
+          <CategoryButton name="Galletas" colorIndex={5} />
+
+          <CategoryButton name="Galletas" colorIndex={5} />
+
+          <CategoryButton name="Galletas" colorIndex={5} />
+
+
         </div>
 
         <div className="ventas__products">
           {/* Mock de productos usando la clase de color de la categoría activa (Gomitas = 1) */}
-          {[...Array(6)].map((_, i) => (
+          {[...Array(10)].map((_, i) => (
             <button key={i} className="ventas__product-btn cat-btn--1">
               Mogul ositos
             </button>
