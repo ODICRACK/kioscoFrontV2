@@ -363,8 +363,8 @@ body {
 .ventas__cart-actions {
   display: flex;
   justify-content: space-between;
-  gap: 7rem;
-  margin-bottom: 5vh;
+  column-gap: 7rem;
+  margin-bottom: 2vh;
 }
 
 /* Contenedor principal dividido */
