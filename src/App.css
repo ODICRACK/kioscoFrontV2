@@ -378,7 +378,7 @@ body {
 
 .ventas__categories {
   flex: 0 0 40%;
-  height: 45vh;
+  height: 35vh;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -391,7 +391,7 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   align-content: start;
-  height: 45vh;
+  height: 35vh;
   overflow-y: auto;
 }
 
