@@ -1,41 +1,89 @@
+// src/pages/SuperAdmin.jsx
 import { useState } from 'react';
-import { useLocation } from 'wouter';
-import Header from '../components/Header';
 import Input from '../components/Input';
-import Button from '../components/Button';
+import { useSnackbar } from '../context/SnackbarContext';
+import { setupNegocio } from '../services/authService';
 
 const SuperAdmin = () => {
-  const [, setLocation] = useLocation();
-  
-  // Estado mockeado para saber si ya existe el negocio
-  const [negocioExiste, setNegocioExiste] = useState(false);
+  const { showSnackbar } = useSnackbar();
+  const [nombreNegocio, setNombreNegocio] = useState('');
+  const [usuarioJefe, setUsuarioJefe] = useState('');
+  const [passwordJefe, setPasswordJefe] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCrearNegocio = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // Llamada al backend
+      await setupNegocio(nombreNegocio, usuarioJefe, passwordJefe);
+      
+      showSnackbar('Negocio y Jefe creados exitosamente', 'success');
+      
+      // Limpiamos los campos
+      setNombreNegocio('');
+      setUsuarioJefe('');
+      setPasswordJefe('');
+
+    } catch (error) {
+      // Mostramos el error (ej. "El nombre de usuario ya está en uso")
+      const mensajeError = error.response?.data?.message || 'Error al configurar el negocio';
+      showSnackbar(mensajeError, 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="admin-panel">
-      <Header title="Super Admin" onBackClick={() => setLocation('/login')} />
-
-      {negocioExiste ? (
-        <div className="card-panel">
-          <h2 className="card-panel__title">Negocio Actual</h2>
-          <p style={{ textAlign: 'center', fontWeight: 'bold' }}>Kiosco 7°1</p>
-          <p style={{ textAlign: 'center', marginBottom: '1rem' }}>Dueño asignado</p>
-          <Button variant="vaciar" onClick={() => setNegocioExiste(false)}>Eliminar Negocio</Button>
-        </div>
-      ) : (
-        <div className="card-panel">
-          <h2 className="card-panel__title">Crear Nuevo Negocio</h2>
-          <label style={{ fontSize: '0.85rem' }}>Nombre del Negocio</label>
-          <Input placeholder="Ej. Kiosco Central" />
-          
-          <h3 style={{ fontSize: '1rem', marginTop: '1rem' }}>Cuenta del Jefe</h3>
-          <Input placeholder="Usuario del Jefe" />
-          <Input type="password" placeholder="Contraseña" />
-          
-          <div style={{ marginTop: '1rem' }}>
-            <Button onClick={() => setNegocioExiste(true)}>Crear y Vincular</Button>
+    <div className="super-admin">
+      <h2 className="super-admin__title">Panel de Super Administrador</h2>
+      
+      <div className="super-admin__card card-panel">
+        <h3>Alta de Nuevo Negocio</h3>
+        <p>Complete los datos para inicializar un nuevo sistema y crear su administrador (Jefe).</p>
+        
+        <form className="super-admin__form" onSubmit={handleCrearNegocio}>
+          <div className="form-group">
+            <label>Nombre del Negocio</label>
+            <Input 
+              placeholder="Ej: Kiosco 7°1" 
+              value={nombreNegocio}
+              onChange={(e) => setNombreNegocio(e.target.value)}
+              required
+            />
           </div>
-        </div>
-      )}
+
+          <div className="form-group">
+            <label>Usuario del Jefe</label>
+            <Input 
+              placeholder="Ej: jefe_juan" 
+              value={usuarioJefe}
+              onChange={(e) => setUsuarioJefe(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contraseña del Jefe</label>
+            <Input 
+              type="password" 
+              placeholder="Mínimo 6 caracteres" 
+              value={passwordJefe}
+              onChange={(e) => setPasswordJefe(e.target.value)}
+              required
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            className="btn btn--primary"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Creando...' : 'Registrar Negocio'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

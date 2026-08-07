@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Utiliza variables de entorno para la URL de la API (facilita el paso a producción)
+// Toma la URL de Render desde el .env, o usa localhost como respaldo
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const api = axios.create({
@@ -10,15 +10,18 @@ const api = axios.create({
   },
 });
 
-// Interceptor de Peticiones (Request)
+// ==========================================
+// INTERCEPTOR DE PETICIONES (REQUEST)
+// ==========================================
+// Antes de que cualquier petición salga hacia el backend, esto se ejecuta.
 api.interceptors.request.use(
   (config) => {
-    // Recupera el token de sesión. 
-    // Este token es vital porque contiene el ROL del usuario y su ID_NEGOCIO.
+    // Buscamos el token en el almacenamiento del navegador
     const token = localStorage.getItem('token');
     
+    // Si existe, lo adjuntamos como un "Pase VIP" en los headers
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     
     return config;
@@ -28,24 +31,32 @@ api.interceptors.request.use(
   }
 );
 
-// Interceptor de Respuestas (Response)
+// ==========================================
+// INTERCEPTOR DE RESPUESTAS (RESPONSE)
+// ==========================================
+// Cuando el backend nos responde, evaluamos si el token sigue siendo válido.
 api.interceptors.response.use(
   (response) => {
-    // Si la respuesta es exitosa, la devolvemos tal cual
+    // Si todo fue bien, simplemente devolvemos la respuesta
     return response;
   },
   (error) => {
-    // MANEJO GLOBAL DE ERRORES (Reemplazo del alert)
-    // TODO: Aquí se despachará el evento para mostrar el Snackbar global rojo
-    const errorMessage = error.response?.data?.message || 'Error de conexión con el servidor';
-    console.error('[Snackbar Error]:', errorMessage);
-
-    // Si el error es 401 (No autorizado / Sesión expirada)
-    if (error.response?.status === 401) {
+    // Si el backend nos rechaza con un 401 (Token inválido o expirado)
+    if (error.response && error.response.status === 401) {
+      console.warn('Sesión expirada o no autorizada. Redirigiendo al login...');
+      
+      // Limpiamos los datos locales para no dejar rastro
       localStorage.removeItem('token');
-      window.location.href = '/login'; // Redirección limpia
+      localStorage.removeItem('user_role');
+      
+      // Forzamos la redirección a la pantalla de login
+      // Al ser un archivo JS puro (fuera del contexto de React), usamos window.location
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
-
+    
+    // Devolvemos el error para que el componente que hizo la petición pueda mostrar un mensaje (ej. Snackbar)
     return Promise.reject(error);
   }
 );
