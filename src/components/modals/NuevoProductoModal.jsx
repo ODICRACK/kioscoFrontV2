@@ -3,7 +3,7 @@ import Modal from '../Modal';
 import Input from '../Input';
 import Button from '../Button';
 
-const NuevoProductoModal = ({ isOpen, onClose }) => {
+const NuevoProductoModal = ({ isOpen, onClose, categorias }) => {
   const [nombre, setNombre] = useState('');
   const [categoria, setCategoria] = useState('');
   const [subCategoria, setSubCategoria] = useState('');
@@ -27,8 +27,9 @@ const NuevoProductoModal = ({ isOpen, onClose }) => {
       
       <select className="input" value={categoria} onChange={e => setCategoria(e.target.value)}>
         <option value="">Seleccione Categoría</option>
-        <option value="1">Gomitas</option>
-        <option value="2">Alfajores</option>
+        {categorias.map((catego, index)=>{
+          <option value={catego.id}>{catego.nombre}</option>
+        })}
       </select>
 
       {/* Select de Subcategorías */}
