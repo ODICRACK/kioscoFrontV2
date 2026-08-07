@@ -53,7 +53,7 @@ const Stock = () => {
                 <div className="stock__header-actions">
                     {/* Botón de Configurar Stock (Q3) */}
                     <button className="btn-edit" onClick={() => handleOpenModals('Configurar Stock')}>
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             settings
                         </span>
                     </button>
@@ -98,7 +98,7 @@ const Stock = () => {
                         />
                     </div>
                     <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             edit
                         </span>
                     </button>
@@ -130,7 +130,7 @@ const Stock = () => {
                         <Input className="input--stock" defaultValue="2000" onChange={(e) => handleNumberChange(e, 'precio', 2)} />
                     </div>
                     <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             edit
                         </span>
                     </button>
@@ -147,7 +147,7 @@ const Stock = () => {
                         <Input className="input--stock" defaultValue="2000" onChange={(e) => handleNumberChange(e, 'precio', 3)} />
                     </div>
                     <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             edit
                         </span>
                     </button>
@@ -161,7 +161,7 @@ const Stock = () => {
                         <Input className="input--stock" defaultValue="2000" onChange={(e) => handleNumberChange(e, 'precio', 4)} />
                     </div>
                     <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             edit
                         </span>
                     </button>

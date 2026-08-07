@@ -5,7 +5,7 @@ import Button from '../components/Button';
 
 const Home = () => {
   const [, setLocation] = useLocation();
-
+    
   // TODO: Conectar con el contexto de sesión o store global en el futuro
   const handleLogout = () => {
     // Lógica para limpiar token/sesión iría aquí
@@ -31,7 +31,12 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Header title="Kiosco 7°1" onBackClick={handleLogout} />
+      <Header 
+        title="Kiosco 7°1" 
+        onBackClick={handleLogout} 
+        rightIcon="person_add"
+        onRightClick={() => setLocation('/admin')}
+      />
 
       <div className="home__menu">
         <Button onClick={() => setLocation('/resumen')}>Resumen de ventas</Button>
