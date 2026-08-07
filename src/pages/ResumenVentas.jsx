@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { useLocation } from 'wouter';
 import Header from '../components/Header';
 import Input from '../components/Input';
+import EdicionVentaModal from '../components/modals/EdicionVentaModal';
 
 const ResumenVentas = () => {
     const [, setLocation] = useLocation();
 
+
     // Estados iniciales de filtros (Mock basados en la imagen)
     const [fecha, setFecha] = useState('2026-08-26');
     const [turno, setTurno] = useState('todo');
+    const [ventaAEditar, setVentaAEditar] = useState(null);
 
     const ventasData = [
         { id: 1, monto: 1000, fecha: '06/07/2026', hora: '8:20:30:40', metodo: 'Efectivo' },
@@ -22,7 +25,7 @@ const ResumenVentas = () => {
 
     const handleOpenEditModal = (ventaId) => {
         // TODO: Implementar apertura del modal de edición de venta en Etapa 10
-        console.log(`Abriendo modal de edición para la venta ID: ${ventaId}`);
+        setVentaAEditar(ventaId);
     };
 
     return (
@@ -79,27 +82,32 @@ const ResumenVentas = () => {
                 </div>
 
                 {ventasData.map((item) => (
-          <div className="resumen__row" key={item.id}>
-            <span className="resumen__row-monto">${item.monto}</span>
-            <span className="resumen__row-fecha">
-              {item.fecha}<br />{item.hora}
-            </span>
-            <span>{item.metodo}</span>
-            {/* Reemplazamos <td> por un <div> para evitar el error de DOM */}
-            <div>
-              <button 
-                className="btn-info" 
-                onClick={() => handleOpenEditModal(item.id)}
-                type="button"
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>
-                  info
-                </span>
-              </button>
+                    <div className="resumen__row" key={item.id}>
+                        <span className="resumen__row-monto">${item.monto}</span>
+                        <span className="resumen__row-fecha">
+                            {item.fecha}<br />{item.hora}
+                        </span>
+                        <span>{item.metodo}</span>
+                        {/* Reemplazamos <td> por un <div> para evitar el error de DOM */}
+                        <div>
+                            <button
+                                className="btn-info"
+                                onClick={() => handleOpenEditModal(item.id)}
+                                type="button"
+                            >
+                                <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>
+                                    info
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
-          </div>
-        ))}
-            </div>
+            <EdicionVentaModal
+                isOpen={ventaAEditar !== null}
+                onClose={() => setVentaAEditar(null)}
+                venta={ventaAEditar} // Pasas la info de la venta para que el modal la consuma
+            />
         </div>
     );
 };

@@ -4,20 +4,22 @@ import BackButton from '../components/BackButton';
 import Button from '../components/Button';
 import CategoryButton from '../components/CategoryButton';
 import { useTurno } from '../context/TurnoContext';
+import PagoMixtoModal from '../components/modals/PagoMixtoModal';
 
 const Ventas = () => {
   const [, setLocation] = useLocation();
   const { turno: turnoActivo, setTurno: setTurnoActivo } = useTurno();
-
+  const [showPagoMixto, setShowPagoMixto] = useState(false);
   // Estados locales para la UI
-  
+
   const [metodoPago, setMetodoPago] = useState('efectivo');
 
 
 
   const handleVender = () => {
-    if (metodoPago === 'ambos') {
+    if (metodoPago == 'ambos') {
       // TODO: Decisión pendiente - Implementar modal de pago mixto en Etapa 10
+      setShowPagoMixto(true);
       console.log('Abrir modal de pago mixto');
     } else {
       console.log(`Venta procesada con: ${metodoPago}`);
@@ -98,7 +100,7 @@ const Ventas = () => {
           </Button>
           <Button
             variant="ambos"
-            onClick={() => setMetodoPago('ambos')}
+            onClick={() =>{ setMetodoPago('ambos' )}}
           >
             ambos
           </Button>
@@ -118,6 +120,16 @@ const Ventas = () => {
           Vender
         </Button>
       </div>
+      <PagoMixtoModal
+        isOpen={showPagoMixto}
+        onClose={() => setShowPagoMixto(false)}
+        totalVenta={7000} /* Este valor luego será dinámico según el carrito */
+        onConfirm={(pagos) => {
+          console.log('Pagos recibidos:', pagos);
+          setShowPagoMixto(false);
+          // Aquí luego llamarás al servicio de Axios para guardar la venta
+        }}
+      />
     </div>
   );
 };

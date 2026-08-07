@@ -38,9 +38,6 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* <Modal6
-      isOpen={true}
-      onClose={false}/> */}
       <Header 
         title="Kiosco 7°1" 
         onBackClick={handleLogout} 

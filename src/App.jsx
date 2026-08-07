@@ -8,29 +8,44 @@ import ResumenVentas from './pages/ResumenVentas';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import SuperAdmin from './pages/SuperAdmin';
+import { SnackbarProvider } from './context/SnackbarContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
   return (
-    <TurnoProvider>
-      <div className="app">
-        <Layout>
-          <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/ventas" component={Ventas} />
-            <Route path="/stock" component={Stock} />
-            <Route path="/resumen" component={ResumenVentas} />
-            <Route path="/login" component={Login} />
-            <Route path="/admin" component={Admin} />
-            <Route path="/super-admin" component={SuperAdmin} />
-            
-            <Route>
-              <div className="app__not-found">Página no encontrada</div>
-            </Route>
-          </Switch>
-        </Layout>
-      </div>
-    </TurnoProvider>
+    <SnackbarProvider>
+      <TurnoProvider>
+        <div className="app">
+          <Layout>
+            <Switch>
+              {/* Ruta pública */}
+              <Route path="/login" component={Login} />
+
+              {/* Rutas Privadas (Cualquier empleado puede acceder) */}
+              <Route path="/" component={() => <ProtectedRoute component={Home} />} />
+              <Route path="/ventas" component={() => <ProtectedRoute component={Ventas} />} />
+              <Route path="/stock" component={() => <ProtectedRoute component={Stock} />} />
+              <Route path="/resumen" component={() => <ProtectedRoute component={ResumenVentas} />} />
+
+              {/* Rutas Restringidas (Solo roles específicos) */}
+              <Route path="/admin" component={() => (
+                <ProtectedRoute component={Admin} allowedRoles={['jefe', 'super']} />
+              )} />
+              
+              <Route path="/super-admin" component={() => (
+                <ProtectedRoute component={SuperAdmin} allowedRoles={['super']} />
+              )} />
+              
+              {/* 404 */}
+              <Route>
+                <div className="app__not-found">Página no encontrada</div>
+              </Route>
+            </Switch>
+          </Layout>
+        </div>
+      </TurnoProvider>
+    </SnackbarProvider>
   );
 }
 

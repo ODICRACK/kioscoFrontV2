@@ -3,6 +3,9 @@ import { useLocation } from 'wouter';
 import BackButton from '../components/BackButton';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import NuevoProductoModal from '../components/modals/NuevoProductoModal';
+import EdicionProductoModal from '../components/modals/EdicionProductoModal';
+import ConfigurarStockModal from '../components/modals/ConfigurarStockModal';
 
 const Stock = () => {
     const [, setLocation] = useLocation();
@@ -12,16 +15,15 @@ const Stock = () => {
     const [addingSubCategoryTo, setAddingSubCategoryTo] = useState(null); // Guarda el ID de la categoría
     const [inlineInputValue, setInlineInputValue] = useState('');
 
+    const [showNuevoProducto, setShowNuevoProducto] = useState(false);
+    const [showEdicionProducto, setShowEdicionProducto] = useState(false);
+    const [showConfigStock, setShowConfigStock] = useState(false);
+
     // Función para forzar solo números y simular el auto-guardado
     const handleNumberChange = (e, field, id) => {
         const value = e.target.value.replace(/\D/g, ''); // Remueve cualquier caracter no numérico
         // TODO: Aquí se despacharía la acción a Axios/Context para actualizar el estado global en tiempo real
         console.log(`Auto-guardando ${field} del producto ${id}: ${value}`);
-    };
-
-    const handleOpenModals = (modalName) => {
-        // TODO: Implementar en la Etapa 10
-        console.log(`Abriendo modal: ${modalName}`);
     };
 
     // Renderizador del formulario Inline
@@ -52,7 +54,7 @@ const Stock = () => {
 
                 <div className="stock__header-actions">
                     {/* Botón de Configurar Stock (Q3) */}
-                    <button className="btn-edit" onClick={() => handleOpenModals('Configurar Stock')}>
+                    <button className="btn-edit" onClick={() => setShowConfigStock(true)}>
                         <span className="material-symbols-outlined">
                             settings
                         </span>
@@ -62,7 +64,7 @@ const Stock = () => {
                     <button
                         className="shift-btn shift-btn--active"
                         style={{ padding: '0.25rem 0.5rem', fontSize: '0.9rem' }}
-                        onClick={() => handleOpenModals('Nuevo Producto')}
+                        onClick={() => setShowNuevoProducto(true)}
                     >
                         Nuevo Producto
                     </button>
@@ -97,7 +99,7 @@ const Stock = () => {
                             onChange={(e) => handleNumberChange(e, 'precio', 1)}
                         />
                     </div>
-                    <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
+                    <button className="btn-edit" onClick={() => setShowEdicionProducto(true)}>
                         <span className="material-symbols-outlined">
                             edit
                         </span>
@@ -129,7 +131,7 @@ const Stock = () => {
                         <span>$</span>
                         <Input className="input--stock" defaultValue="2000" onChange={(e) => handleNumberChange(e, 'precio', 2)} />
                     </div>
-                    <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
+                    <button className="btn-edit" onClick={() => setShowEdicionProducto(true)}>
                         <span className="material-symbols-outlined">
                             edit
                         </span>
@@ -146,7 +148,7 @@ const Stock = () => {
                         <span>$</span>
                         <Input className="input--stock" defaultValue="2000" onChange={(e) => handleNumberChange(e, 'precio', 3)} />
                     </div>
-                    <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
+                    <button className="btn-edit" onClick={() => setShowEdicionProducto(true)}>
                         <span className="material-symbols-outlined">
                             edit
                         </span>
@@ -160,7 +162,7 @@ const Stock = () => {
                         <span>$</span>
                         <Input className="input--stock" defaultValue="2000" onChange={(e) => handleNumberChange(e, 'precio', 4)} />
                     </div>
-                    <button className="btn-edit" onClick={() => handleOpenModals('Edición de Producto')}>
+                    <button className="btn-edit" onClick={() => setShowEdicionProducto(true)}>
                         <span className="material-symbols-outlined">
                             edit
                         </span>
@@ -182,7 +184,20 @@ const Stock = () => {
                     <Button onClick={() => setAddingCategory(true)}>Nueva Categoria</Button>
                 )}
             </div>
+            <NuevoProductoModal
+                isOpen={showNuevoProducto}
+                onClose={() => setShowNuevoProducto(false)}
+            />
 
+            <EdicionProductoModal
+                isOpen={showEdicionProducto}
+                onClose={() => setShowEdicionProducto(false)}
+            />
+
+            <ConfigurarStockModal
+                isOpen={showConfigStock}
+                onClose={() => setShowConfigStock(false)}
+            />
         </div>
     );
 };
