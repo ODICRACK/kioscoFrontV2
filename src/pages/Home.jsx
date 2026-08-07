@@ -2,6 +2,13 @@ import { useLocation } from 'wouter';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import Header from '../components/Header';
 import Button from '../components/Button';
+import Modal1 from "../components/modals/NuevoProductoModal"
+import Modal2 from "../components/modals/PagoMixtoModal"
+import Modal3 from "../components/modals/PromoModal"
+import Modal4 from "../components/modals/ConfigurarStockModal"
+import Modal5 from "../components/modals/EdicionProductoModal"
+import Modal6 from "../components/modals/EdicionVentaModal"
+
 
 const Home = () => {
   const [, setLocation] = useLocation();
@@ -31,6 +38,9 @@ const Home = () => {
 
   return (
     <div className="home">
+      {/* <Modal6
+      isOpen={true}
+      onClose={false}/> */}
       <Header 
         title="Kiosco 7°1" 
         onBackClick={handleLogout} 

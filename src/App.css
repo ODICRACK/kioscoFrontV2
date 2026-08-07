@@ -62,6 +62,31 @@
 }
 
 /* ==========================================
+   TRANSICIONES GLOBALES (Cambio de Turno)
+   ========================================== */
+/* Se aplica a todos los elementos clave para un fundido perfecto */
+body,
+.layout,
+.header,
+.btn,
+.cat-btn,
+.shift-btn,
+.input,
+.card-panel,
+.resumen__card,
+.home__chart-card,
+.modal-content,
+.btn-edit,
+.btn-inline,
+.btn-back,
+.admin-list__item {
+    transition: background-color 0.4s ease,
+        color 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease !important;
+}
+
+/* ==========================================
    RESET Y ESTILOS BASE (Mobile First)
    ========================================== */
 * {
@@ -486,324 +511,492 @@ body {
     font-weight: 700;
     color: var(--color-texto);
 }
+
 /* ==========================================
    VISTA: STOCK
    ========================================== */
 .stock {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
 }
 
 /* Cabecera extendida para Stock */
 .stock__header-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: absolute;
-  right: 0;
-  gap: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    gap: 0.5rem;
 }
 
 .stock__main-title {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-texto);
-  border-bottom: 2px solid var(--color-texto);
-  padding-bottom: 0.5rem;
-  margin: 1rem 0;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-texto);
+    border-bottom: 2px solid var(--color-texto);
+    padding-bottom: 0.5rem;
+    margin: 1rem 0;
 }
 
 /* Grilla de productos */
 .stock__category-title {
-  text-align: center;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin: 1.5rem 0 0.5rem;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 1.5rem 0 0.5rem;
 }
 
 .stock__subcategory-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0.5rem 0;
-  text-align: left;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    text-align: left;
 }
 
 .stock__grid-header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.2fr auto;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--color-texto);
-  padding-bottom: 0.25rem;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  text-align: center;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.2fr auto;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--color-texto);
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    text-align: center;
 }
 
 .stock__grid-header span:first-child {
-  text-align: left;
+    text-align: left;
 }
 
 .stock__row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.2fr auto;
-  gap: 0.5rem;
-  align-items: center;
-  margin-bottom: 0.75rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.2fr auto;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
 }
 
 .stock__name {
-  font-size: 0.9rem;
-  line-height: 1.2;
+    font-size: 0.9rem;
+    line-height: 1.2;
 }
 
 /* Contenedor del precio para ubicar el signo $ */
 .stock__price-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 /* Inputs específicos de stock (Cajas blancas) */
 .input--stock {
-  text-align: center;
-  padding: 0.25rem;
+    text-align: center;
+    padding: 0.25rem;
 }
 
 /* Botón Editar (Cuadrado dorado) */
 .btn-edit {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-bordes);
-  color: var(--color-texto);
-  border-radius: 4px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-bordes);
+    color: var(--color-texto);
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .btn-edit .material-icons {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 
 /* --- INPUTS INLINE (Creación rápida) --- */
 .inline-form {
-  display: flex;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    align-items: center;
 }
 
 .btn-inline {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-bordes);
-  color: var(--color-texto);
-  border-radius: 4px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-bordes);
+    color: var(--color-texto);
+    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .btn-inline--accept {
-  border-color: var(--color-btn-vender);
-  color: var(--color-btn-vender);
+    border-color: var(--color-btn-vender);
+    color: var(--color-btn-vender);
 }
 
 .btn-inline--cancel {
-  border-color: var(--color-vaciar-carrito);
-  color: var(--color-vaciar-carrito);
+    border-color: var(--color-vaciar-carrito);
+    color: var(--color-vaciar-carrito);
 }
+
 /* ==========================================
    VISTA: RESUMEN DE VENTAS (DETALLE)
    ========================================== */
 .resumen {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
 }
 
 /* Tarjeta de filtros y totales generales */
 .resumen__card {
-  border: 2px solid var(--color-bordes);
-  border-radius: 8px;
-  padding: 1rem;
-  background-color: var(--color-fondo);
-  box-shadow: 2px 2px 4px var(--color-sombras);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    border: 2px solid var(--color-bordes);
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: var(--color-fondo);
+    box-shadow: 2px 2px 4px var(--color-sombras);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .resumen__filters {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
 .resumen__filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
 }
 
 .resumen__filter-label {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--color-texto);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-texto);
 }
 
 .resumen__totals-row {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .resumen__total-box {
-  flex: 1;
-  padding: 0.5rem;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 4px;
-  text-align: center;
+    flex: 1;
+    padding: 0.5rem;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 4px;
+    text-align: center;
 }
 
-.resumen__total-box--efectivo { background-color: var(--color-efectivo); color: #000; }
-.resumen__total-box--transferencia { background-color: var(--color-transferencia); color: #000; }
+.resumen__total-box--efectivo {
+    background-color: var(--color-efectivo);
+    color: #000;
+}
+
+.resumen__total-box--transferencia {
+    background-color: var(--color-transferencia);
+    color: #000;
+}
 
 .resumen__grand-total {
-  background-color: var(--color-bordes);
-  color: var(--color-texto);
-  padding: 0.5rem;
-  font-weight: 700;
-  text-align: center;
-  border-radius: 4px;
+    background-color: var(--color-bordes);
+    color: var(--color-texto);
+    padding: 0.5rem;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 4px;
 }
 
 /* Tabla de transacciones */
 .resumen__table-header {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr 0.6fr;
-  background-color: var(--color-sombras);
-  padding: 0.5rem;
-  font-weight: 700;
-  text-align: center;
-  font-size: 0.9rem;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr 0.6fr;
+    background-color: var(--color-sombras);
+    padding: 0.5rem;
+    font-weight: 700;
+    text-align: center;
+    font-size: 0.9rem;
 }
 
 .resumen__row {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr 0.6fr;
-  align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--color-bordes);
-  text-align: center;
-  font-size: 0.85rem;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr 0.6fr;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-bordes);
+    text-align: center;
+    font-size: 0.85rem;
 }
 
 .resumen__row-monto {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 .resumen__row-fecha {
-  font-size: 0.75rem;
-  line-height: 1.1;
+    font-size: 0.75rem;
+    line-height: 1.1;
 }
 
 /* Botón de Info (Cuadrado dorado con ícono) */
 .btn-info {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-bordes);
-  color: var(--color-texto);
-  border-radius: 4px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 0 auto;
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-bordes);
+    color: var(--color-texto);
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto;
 }
+
 /* ==========================================
    HEADER (Actualización)
    ========================================== */
 .header__action-btn {
-  background-color: var(--color-fondo);
-  border: 2px solid var(--color-bordes);
-  color: var(--color-texto);
-  border-radius: 8px;
-  padding: 0.25rem 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 2px 2px 4px var(--color-sombras);
-  position: absolute;
-  right: 0;
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-bordes);
+    color: var(--color-texto);
+    border-radius: 8px;
+    padding: 0.25rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px var(--color-sombras);
+    position: absolute;
+    right: 0;
 }
 
 /* ==========================================
    VISTA: LOGIN & PANELES DE ADMINISTRACIÓN
    ========================================== */
-.auth-container, .admin-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-bottom: 2rem;
+.auth-container,
+.admin-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
 }
 
 .auth-container {
-  justify-content: center;
-  height: 100%;
-  margin-top: 20vh;
+    justify-content: center;
+    height: 100%;
+    margin-top: 20vh;
 }
 
 .card-panel {
-  border: 2px solid var(--color-bordes);
-  border-radius: 8px;
-  padding: 1.5rem;
-  background-color: var(--color-fondo);
-  box-shadow: 2px 2px 4px var(--color-sombras);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    border: 2px solid var(--color-bordes);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background-color: var(--color-fondo);
+    box-shadow: 2px 2px 4px var(--color-sombras);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .card-panel__title {
-  text-align: center;
-  font-size: 1.25rem;
-  color: var(--color-texto);
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-bordes);
-  padding-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1.25rem;
+    color: var(--color-texto);
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-bordes);
+    padding-bottom: 0.5rem;
 }
 
 /* Listas de administración */
 .admin-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .admin-list__item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem;
-  border: 1px solid var(--color-bordes);
-  border-radius: 4px;
-  background-color: var(--color-input-fondo);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid var(--color-bordes);
+    border-radius: 4px;
+    background-color: var(--color-input-fondo);
 }
 
 .admin-list__text {
-  font-weight: 600;
-  font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* ==========================================
+   MODALES (ESTRUCTURA GLOBAL)
+   ========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Oscurece el fondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-bordes);
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Variante específica para promociones (90% ancho, 80% alto) */
+.modal-content--promo {
+    width: 90%;
+    height: 80%;
+    max-width: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-bordes);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-texto);
+}
+
+/* ==========================================
+   MODAL: PAGO MIXTO
+   ========================================== */
+.mixed-payment__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.mixed-payment__column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.mixed-payment__label {
+    font-weight: 700;
+    color: var(--color-texto);
+}
+
+.mixed-payment__input {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.mixed-payment__increments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-increment {
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-bordes);
+    color: var(--color-texto);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ==========================================
+   MODALES (ESTRUCTURAS INTERNAS)
+   ========================================== */
+.modal__field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.modal__label {
+    font-size: 0.85rem;
+    color: var(--color-texto);
+    font-weight: 600;
+}
+
+.modal__row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.modal__actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: space-between;
+}
+
+.modal__text-center {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.modal__text-right {
+    text-align: right;
+    font-weight: 700;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+.btn-delete-icon {
+    border-color: var(--color-vaciar-carrito);
+    color: var(--color-vaciar-carrito);
 }

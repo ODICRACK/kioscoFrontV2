@@ -3,18 +3,17 @@ import { useLocation } from 'wouter';
 import BackButton from '../components/BackButton';
 import Button from '../components/Button';
 import CategoryButton from '../components/CategoryButton';
+import { useTurno } from '../context/TurnoContext';
 
 const Ventas = () => {
   const [, setLocation] = useLocation();
-  
+  const { turno: turnoActivo, setTurno: setTurnoActivo } = useTurno();
+
   // Estados locales para la UI
-  const [turnoActivo, setTurnoActivo] = useState('mañana');
+  
   const [metodoPago, setMetodoPago] = useState('efectivo');
 
-  // Efecto para cambiar el tema global al cambiar el turno
-  useEffect(() => {
-    document.body.setAttribute('data-theme', turnoActivo);
-  }, [turnoActivo]);
+
 
   const handleVender = () => {
     if (metodoPago === 'ambos') {
@@ -32,19 +31,19 @@ const Ventas = () => {
       <div className="ventas__header-row">
         <BackButton onClick={() => setLocation('/')} />
         <div className="ventas__shifts">
-          <button 
+          <button
             className={`shift-btn ${turnoActivo === 'mañana' ? 'shift-btn--active' : ''}`}
             onClick={() => setTurnoActivo('mañana')}
           >
             Mañana
           </button>
-          <button 
+          <button
             className={`shift-btn ${turnoActivo === 'tarde' ? 'shift-btn--active' : ''}`}
             onClick={() => setTurnoActivo('tarde')}
           >
             Tarde
           </button>
-          <button 
+          <button
             className={`shift-btn ${turnoActivo === 'noche' ? 'shift-btn--active' : ''}`}
             onClick={() => setTurnoActivo('noche')}
           >
@@ -90,21 +89,21 @@ const Ventas = () => {
       {/* Footer (Pagos y Total) */}
       <div className="ventas__footer">
         <div className="ventas__methods">
-          <Button 
-            variant="transferencia" 
+          <Button
+            variant="transferencia"
             onClick={() => setMetodoPago('transferencia')}
             className={metodoPago === 'transferencia' ? 'btn--active-shadow' : ''}
           >
             Transfe
           </Button>
-          <Button 
-            variant="ambos" 
+          <Button
+            variant="ambos"
             onClick={() => setMetodoPago('ambos')}
           >
             ambos
           </Button>
-          <Button 
-            variant="efectivo" 
+          <Button
+            variant="efectivo"
             onClick={() => setMetodoPago('efectivo')}
           >
             Efectivo
