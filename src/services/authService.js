@@ -17,3 +17,19 @@ export const setupNegocio = async (nombreNegocio, usuarioJefe, passwordJefe) => 
   });
   return response.data;
 };
+
+// Gestión de usuarios empleados por el Jefe
+export const getUsuarios = async () => {
+  const response = await api.get('/auth/usuarios');
+  return response.data;
+};
+
+export const crearUsuarioEmpleado = async (usuario, password) => {
+  const response = await api.post('/auth/usuarios', { usuario, password });
+  return response.data;
+};
+
+export const eliminarUsuario = async (id) => {
+  const response = await api.delete(`/auth/usuarios/${id}`);
+  return response.data;
+};

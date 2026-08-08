@@ -1,37 +1,58 @@
+import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import Header from '../components/Header';
 import Button from '../components/Button';
-import Modal1 from "../components/modals/NuevoProductoModal"
-import Modal2 from "../components/modals/PagoMixtoModal"
-import Modal3 from "../components/modals/PromoModal"
-import Modal4 from "../components/modals/ConfigurarStockModal"
-import Modal5 from "../components/modals/EdicionProductoModal"
-import Modal6 from "../components/modals/EdicionVentaModal"
-
+import { ventasService } from '../services/ventasService';
 
 const Home = () => {
   const [, setLocation] = useLocation();
+  const [ventasDia, setVentasDia] = useState({ efectivo: 0, transferencia: 0 });
+
+  useEffect(() => {
+    cargarResumenDelDia();
+  }, []);
+
+  const cargarResumenDelDia = async () => {
+    try {
+      const hoy = new Date().toISOString().split('T')[0];
+      const res = await ventasService.obtenerResumen(hoy);
+      
+      let totEfectivo = 0;
+      let totTransfe = 0;
+
+      (res || []).forEach(venta => {
+        (venta.pagos || []).forEach(pago => {
+          if (pago.metodo === 'efectivo') {
+            totEfectivo += Number(pago.monto) || 0;
+          } else if (pago.metodo === 'transferencia') {
+            totTransfe += Number(pago.monto) || 0;
+          }
+        });
+      });
+
+      setVentasDia({
+        efectivo: totEfectivo,
+        transferencia: totTransfe
+      });
+    } catch (error) {
+      console.error('Error al obtener el resumen del día:', error);
+    }
+  };
     
-  // TODO: Conectar con el contexto de sesión o store global en el futuro
   const handleLogout = () => {
-    // Lógica para limpiar token/sesión iría aquí
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_role');
     setLocation('/login');
   };
 
-  // Datos mockeados para el gráfico (se reemplazarán con datos del backend)
-  const ventasDia = {
-    efectivo: 120000,
-    transferencia: 300900
-  };
   const total = ventasDia.efectivo + ventasDia.transferencia;
 
   const chartData = [
-    { name: 'Efectivo', value: ventasDia.efectivo, color: 'var(--color-efectivo)' },
-    { name: 'Transferencia', value: ventasDia.transferencia, color: 'var(--color-transferencia)' }
+    { name: 'Efectivo', value: ventasDia.efectivo || (total === 0 ? 1 : 0), color: 'var(--color-efectivo)' },
+    { name: 'Transferencia', value: ventasDia.transferencia || (total === 0 ? 1 : 0), color: 'var(--color-transferencia)' }
   ];
 
-  // Función auxiliar para formatear a moneda (se podría mover a src/utils/ después)
   const formatCurrency = (value) => {
     return `$ ${value.toLocaleString('es-AR')}`;
   };

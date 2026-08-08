@@ -1,46 +1,69 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '../Modal';
 import Button from '../Button';
+import { useSnackbar } from '../../context/SnackbarContext';
 
-const EdicionVentaModal = ({ isOpen, onClose, venta }) => {
-  // Estado mockeado de los productos de esa venta
-  const [productos, setProductos] = useState([
-    { id: 1, nombre: 'Mogul ositos', precio: 2000, cantidad: 2 },
-    { id: 2, nombre: 'Tatin simple', precio: 2000, cantidad: 1 }
-  ]);
+const EdicionVentaModal = ({ isOpen, onClose, venta, onConfirmar }) => {
+  const { showSnackbar } = useSnackbar();
+  const [productos, setProductos] = useState([]);
 
-  const handleEliminarProducto = (id) => {
-    if (productos.length === 1) {
-      // Regla: Siempre deberá quedar al menos un producto dentro de la venta.
-      // TODO: Aquí se despacharía un Snackbar de error
-      console.log('Error: Debe quedar al menos un producto en la venta.');
+  useEffect(() => {
+    if (venta && venta.productos) {
+      setProductos(venta.productos);
+    }
+  }, [venta, isOpen]);
+
+  const handleEliminarProducto = (idProducto) => {
+    if (productos.length <= 1) {
+      showSnackbar('Debe quedar al menos un producto en la venta.', 'error');
       return;
     }
-    setProductos(productos.filter(p => p.id !== id));
+    setProductos(prev => prev.filter(p => (p.id_producto || p.id) !== idProducto));
   };
 
-  const total = productos.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
+  const cajeroNombre = venta?.cajero || venta?.usuario || 'Cajero';
+  const metodosArr = (venta?.pagos || []).map(p => p.metodo ? p.metodo.charAt(0).toUpperCase() + p.metodo.slice(1) : '');
+  const metodoPagoStr = metodosArr.join(' / ') || 'Efectivo';
+
+  const total = productos.reduce((acc, p) => acc + ((Number(p.monto_individual) || Number(p.precio) || 0) * (Number(p.cantidad) || 1)), 0);
+
+  const handleGuardarCambios = async () => {
+    if (!venta) return;
+    if (onConfirmar) {
+      await onConfirmar(venta.id, productos);
+    }
+    onClose();
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Edición de Venta">
       <div className="modal__field-group">
+        <span className="modal__label">Usuario / Cajero (No modificable)</span>
+        <div className="input" style={{ opacity: 0.7 }}>{cajeroNombre}</div>
+      </div>
+
+      <div className="modal__field-group">
         <span className="modal__label">Método de pago (No modificable)</span>
-        <div className="input" style={{ opacity: 0.7 }}>Efectivo</div>
+        <div className="input" style={{ opacity: 0.7 }}>{metodoPagoStr}</div>
       </div>
 
       <div className="admin-list">
-        {productos.map(p => (
-          <div key={p.id} className="admin-list__item">
-            <span className="admin-list__text">{p.cantidad}x {p.nombre} - ${p.precio}</span>
-            <button 
-              className="btn-edit btn-delete-icon" 
-              onClick={() => handleEliminarProducto(p.id)}
-              type="button"
-            >
-              <span className="material-symbols-outlined">delete</span>
-            </button>
-          </div>
-        ))}
+        {productos.map(p => {
+          const pId = p.id_producto || p.id;
+          const precioUnit = Number(p.monto_individual) || Number(p.precio) || 0;
+          return (
+            <div key={pId} className="admin-list__item">
+              <span className="admin-list__text">{p.cantidad}x {p.nombre} - ${precioUnit}</span>
+              <button 
+                className="btn-edit btn-delete-icon" 
+                onClick={() => handleEliminarProducto(pId)}
+                type="button"
+              >
+                <span className="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          );
+        })}
       </div>
       
       <div className="modal__text-right">
@@ -48,7 +71,9 @@ const EdicionVentaModal = ({ isOpen, onClose, venta }) => {
       </div>
       
       <div className="modal__actions">
-        <Button variant="vender" style={{ width: '100%' }}>Confirmar Cambios</Button>
+        <Button variant="vender" style={{ width: '100%' }} onClick={handleGuardarCambios}>
+          Confirmar Cambios
+        </Button>
       </div>
     </Modal>
   );

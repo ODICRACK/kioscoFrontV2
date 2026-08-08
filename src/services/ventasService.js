@@ -21,7 +21,7 @@ export const ventasService = {
 
   obtenerResumen: async (fecha, turno) => {
     // Filtros por query params para alimentar la vista de Resumen de Ventas
-    const response = await api.get('/ventas/resumen', {
+    const response = await api.get('/resumen', {
       params: { fecha, turno }
     });
     return response.data;

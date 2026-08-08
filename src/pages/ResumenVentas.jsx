@@ -1,31 +1,83 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import Header from '../components/Header';
 import Input from '../components/Input';
+import { ventasService } from '../services/ventasService';
 import EdicionVentaModal from '../components/modals/EdicionVentaModal';
 
 const ResumenVentas = () => {
     const [, setLocation] = useLocation();
 
-
-    // Estados iniciales de filtros (Mock basados en la imagen)
-    const [fecha, setFecha] = useState('2026-08-26');
+    const hoy = new Date().toISOString().split('T')[0];
+    const [fecha, setFecha] = useState(hoy);
     const [turno, setTurno] = useState('todo');
+    const [ventas, setVentas] = useState([]);
     const [ventaAEditar, setVentaAEditar] = useState(null);
 
-    const ventasData = [
-        { id: 1, monto: 1000, fecha: '06/07/2026', hora: '8:20:30:40', metodo: 'Efectivo' },
-        { id: 2, monto: 1000, fecha: '06/07/2026', hora: '8:20:30:40', metodo: 'Efectivo' },
-        { id: 3, monto: 1000, fecha: '06/07/2026', hora: '8:20:30:40', metodo: 'Efectivo' },
-    ];
+    useEffect(() => {
+        cargarVentas();
+    }, [fecha, turno]);
 
-    const totalEfectivo = 120000;
-    const totalTransferencia = 300900;
-    const totalGeneral = totalTransferencia; // Ajustado al mock visual
+    const cargarVentas = async () => {
+        try {
+            const turnoFiltro = turno === 'todo' ? undefined : turno;
+            const res = await ventasService.obtenerResumen(fecha, turnoFiltro);
+            setVentas(res || []);
+        } catch (error) {
+            console.error('Error al cargar ventas:', error);
+        }
+    };
 
-    const handleOpenEditModal = (ventaId) => {
-        // TODO: Implementar apertura del modal de edición de venta en Etapa 10
-        setVentaAEditar(ventaId);
+    let totalEfectivo = 0;
+    let totalTransferencia = 0;
+
+    const ventasFormateadas = (ventas || []).map(v => {
+        let montoVenta = 0;
+        const metodosArr = [];
+
+        (v.pagos || []).forEach(p => {
+            const m = Number(p.monto) || 0;
+            montoVenta += m;
+            if (p.metodo === 'efectivo') totalEfectivo += m;
+            if (p.metodo === 'transferencia') totalTransferencia += m;
+            if (p.metodo && !metodosArr.includes(p.metodo)) {
+                metodosArr.push(p.metodo.charAt(0).toUpperCase() + p.metodo.slice(1));
+            }
+        });
+
+        const f = new Date(v.fecha_hora);
+        const fechaStr = isNaN(f.getTime()) ? '' : f.toLocaleDateString('es-AR');
+        const horaStr = isNaN(f.getTime()) ? '' : f.toLocaleTimeString('es-AR');
+
+        let iconoTurno = 'sunny';
+        if (v.turno === 'tarde') iconoTurno = 'wb_twilight';
+        if (v.turno === 'noche') iconoTurno = 'bedtime';
+
+        return {
+            id: v.id,
+            monto: montoVenta,
+            fecha: fechaStr,
+            hora: horaStr,
+            turno: v.turno || 'mañana',
+            iconoTurno,
+            metodo: metodosArr.join(' / ') || 'Efectivo',
+            rawVenta: v
+        };
+    });
+
+    const totalGeneral = totalEfectivo + totalTransferencia;
+
+    const handleOpenEditModal = (venta) => {
+        setVentaAEditar(venta);
+    };
+
+    const handleEditarVenta = async (idVenta, productosModificados) => {
+        try {
+            await ventasService.editarVenta(idVenta, productosModificados);
+            cargarVentas();
+        } catch (error) {
+            console.error('Error al editar venta:', error);
+        }
     };
 
     return (
@@ -75,24 +127,27 @@ const ResumenVentas = () => {
             {/* Tabla de detalle */}
             <div className="resumen__table">
                 <div className="resumen__table-header">
+                    <span>Turno</span>
                     <span>Monto</span>
                     <span>Fecha</span>
                     <span>Metodo</span>
                     <span>Info</span>
                 </div>
 
-                {ventasData.map((item) => (
+                {ventasFormateadas.map((item) => (
                     <div className="resumen__row" key={item.id}>
+                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                            <span className="material-symbols-outlined">{item.iconoTurno}</span>
+                        </span>
                         <span className="resumen__row-monto">${item.monto}</span>
                         <span className="resumen__row-fecha">
                             {item.fecha}<br />{item.hora}
                         </span>
                         <span>{item.metodo}</span>
-                        {/* Reemplazamos <td> por un <div> para evitar el error de DOM */}
                         <div>
                             <button
                                 className="btn-info"
-                                onClick={() => handleOpenEditModal(item.id)}
+                                onClick={() => handleOpenEditModal(item.rawVenta)}
                                 type="button"
                             >
                                 <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>
@@ -106,7 +161,8 @@ const ResumenVentas = () => {
             <EdicionVentaModal
                 isOpen={ventaAEditar !== null}
                 onClose={() => setVentaAEditar(null)}
-                venta={ventaAEditar} // Pasas la info de la venta para que el modal la consuma
+                venta={ventaAEditar}
+                onConfirmar={handleEditarVenta}
             />
         </div>
     );

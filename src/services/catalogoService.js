@@ -14,8 +14,18 @@ export const crearCategoria = async (nombre) => {
   return response.data;
 };
 
+export const eliminarCategoria = async (id) => {
+  const response = await api.delete(`/catalogo/categorias/${id}`);
+  return response.data;
+};
+
 export const crearSubCategoria = async (id_categoria, nombre) => {
   const response = await api.post('/catalogo/subcategorias', { id_categoria, nombre });
+  return response.data;
+};
+
+export const eliminarSubCategoria = async (id) => {
+  const response = await api.delete(`/catalogo/subcategorias/${id}`);
   return response.data;
 };
 

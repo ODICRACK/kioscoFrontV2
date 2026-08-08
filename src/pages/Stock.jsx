@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { getProductos, getCategorias, crearProducto, editarProducto, eliminarProducto, crearCategoria } from '../services/catalogoService';
+import { getProductos, getCategorias, crearProducto, editarProducto, eliminarProducto, crearCategoria, crearSubCategoria, eliminarCategoria, eliminarSubCategoria } from '../services/catalogoService';
 import { useSnackbar } from '../context/SnackbarContext';
 import BackButton from '../components/BackButton';
 import Button from '../components/Button';
@@ -21,18 +21,17 @@ const Stock = () => {
     const [showEdicionProducto, setShowEdicionProducto] = useState(false);
     const [showConfigStock, setShowConfigStock] = useState(false);
 
+    const [productoActivo, setProductoActivo] = useState(null);
+
     const [productos, setProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         cargarDatos();
     }, []);
 
     const cargarDatos = async () => {
-        setIsLoading(true);
         try {
-            // Hacemos ambas peticiones al mismo tiempo para que sea más rápido
             const [prodsData, catsData] = await Promise.all([
                 getProductos(),
                 getCategorias()
@@ -41,8 +40,6 @@ const Stock = () => {
             setCategorias(catsData);
         } catch (error) {
             showSnackbar('Error al cargar el inventario', 'error');
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -50,25 +47,57 @@ const Stock = () => {
         try {
             await crearProducto(nuevoProducto);
             showSnackbar('Producto creado con éxito', 'success');
-            cargarDatos(); // Recargamos la tabla automáticamente
-            // Aquí también deberías cerrar tu modal
+            cargarDatos();
+            setShowNuevoProducto(false);
         } catch (error) {
-            const msj = error.response?.data?.message || 'Error al crear la producto';
+            const msj = error.response?.data?.message || 'Error al crear el producto';
             showSnackbar(msj, 'error');
-            console.log(error)
         }
     };
+
     const handleCrearcategoria = async (nombreCate) => {
         try {
-            console.log(nombreCate)
             await crearCategoria(nombreCate);
-            showSnackbar('categoria creada con éxito', 'success');
-            cargarDatos(); // Recargamos la tabla automáticamente
-            // Aquí también deberías cerrar tu modal
+            showSnackbar('Categoría creada con éxito', 'success');
+            setAddingCategory(false);
+            setInlineInputValue('');
+            cargarDatos();
         } catch (error) {
-            const msj = error.response?.data?.message || 'Error al crear categoria';
+            const msj = error.response?.data?.message || 'Error al crear categoría';
             showSnackbar(msj, 'error');
-            console.log(error)
+        }
+    };
+
+    const handleCrearSubcategoria = async (idCategoria, nombreSub) => {
+        try {
+            await crearSubCategoria(idCategoria, nombreSub);
+            showSnackbar('Subcategoría creada con éxito', 'success');
+            setAddingSubCategoryTo(null);
+            setInlineInputValue('');
+            cargarDatos();
+        } catch (error) {
+            const msj = error.response?.data?.message || 'Error al crear subcategoría';
+            showSnackbar(msj, 'error');
+        }
+    };
+
+    const handleEliminarCategoria = async (id) => {
+        try {
+            await eliminarCategoria(id);
+            showSnackbar('Categoría eliminada con éxito', 'success');
+            cargarDatos();
+        } catch (error) {
+            showSnackbar('Error al eliminar la categoría', 'error');
+        }
+    };
+
+    const handleEliminarSubcategoria = async (id) => {
+        try {
+            await eliminarSubCategoria(id);
+            showSnackbar('Subcategoría eliminada con éxito', 'success');
+            cargarDatos();
+        } catch (error) {
+            showSnackbar('Error al eliminar la subcategoría', 'error');
         }
     };
 
@@ -81,7 +110,7 @@ const Stock = () => {
             showSnackbar('Error al actualizar el producto', 'error');
         }
     };
-    // 4. Función para conectar a tu botón de "Eliminar" (Soft Delete)
+
     const handleEliminarProducto = async (id) => {
         if (!window.confirm('¿Seguro que deseas eliminar este producto?')) return;
 
@@ -94,14 +123,18 @@ const Stock = () => {
         }
     };
 
-    // Función para forzar solo números y simular el auto-guardado
-    const handleNumberChange = (e, field, id) => {
-        const value = e.target.value.replace(/\D/g, ''); // Remueve cualquier caracter no numérico
-        // TODO: Aquí se despacharía la acción a Axios/Context para actualizar el estado global en tiempo real
-        console.log(`Auto-guardando ${field} del producto ${id}: ${value}`);
+    const handleNumberChange = async (e, field, id) => {
+        const value = e.target.value.replace(/\D/g, '');
+        if (value === '') return;
+        try {
+            await editarProducto(id, { [field]: Number(value) });
+            showSnackbar(`${field === 'stock' ? 'Stock' : 'Precio'} actualizado`, 'success');
+            setProductos(prev => prev.map(p => p.id === id ? { ...p, [field]: Number(value) } : p));
+        } catch (error) {
+            showSnackbar(`Error al actualizar ${field}`, 'error');
+        }
     };
 
-    // Renderizador del formulario Inline
     const renderInlineForm = (onCancel, onAccept, placeholder) => (
         <div className="inline-form">
             <Input
@@ -109,7 +142,7 @@ const Stock = () => {
                 onChange={(e) => setInlineInputValue(e.target.value)}
                 placeholder={placeholder}
             />
-            <button className="btn-inline btn-inline--accept"  onClick={() => onAccept(inlineInputValue)}>
+            <button className="btn-inline btn-inline--accept" onClick={() => onAccept(inlineInputValue)}>
                 <span className="material-icons">check</span>
             </button>
             <button className="btn-inline btn-inline--cancel" onClick={() => {
@@ -121,6 +154,12 @@ const Stock = () => {
         </div>
     );
 
+    // Filtrar únicamente las subcategorías que pertenecen a la categoría del producto siendo editado
+    const catDelProducto = (categorias || []).find(
+        c => c.nombre === productoActivo?.categoria_nombre
+    );
+    const subcategoriasDelProducto = catDelProducto?.subcategorias || [];
+
     return (
         <div className="stock">
             {/* Cabecera Especial de Stock */}
@@ -128,14 +167,12 @@ const Stock = () => {
                 <BackButton onClick={() => setLocation('/')} />
 
                 <div className="stock__header-actions">
-                    {/* Botón de Configurar Stock (Q3) */}
                     <button className="btn-edit" onClick={() => setShowConfigStock(true)}>
                         <span className="material-symbols-outlined">
                             settings
                         </span>
                     </button>
 
-                    {/* Botón de Nuevo Producto en la esquina superior derecha (Q1) */}
                     <button
                         className="shift-btn shift-btn--active"
                         style={{ padding: '0.25rem 0.5rem', fontSize: '0.9rem' }}
@@ -160,7 +197,7 @@ const Stock = () => {
                         <span>Editar</span>
                     </div>
 
-                    {/* PRODUCTOS SIN SUBCATEGORÍA (Directos a la categoría, si los hubiera) */}
+                    {/* PRODUCTOS SIN SUBCATEGORÍA */}
                     {productos
                         .filter(p => p.categoria_nombre === categoria.nombre && !p.id_subcategoria)
                         .map(producto => (
@@ -180,7 +217,7 @@ const Stock = () => {
                                     />
                                 </div>
                                 <button className="btn-edit" onClick={() => {
-                                    // Asume que tienes un estado setProductoActivo(producto) para pasarle datos al modal
+                                    setProductoActivo(producto);
                                     setShowEdicionProducto(true);
                                 }}>
                                     <span className="material-symbols-outlined">edit</span>
@@ -211,7 +248,10 @@ const Stock = () => {
                                                 onBlur={(e) => handleNumberChange(e, 'precio', producto.id)}
                                             />
                                         </div>
-                                        <button className="btn-edit" onClick={() => setShowEdicionProducto(true)}>
+                                        <button className="btn-edit" onClick={() => {
+                                            setProductoActivo(producto);
+                                            setShowEdicionProducto(true);
+                                        }}>
                                             <span className="material-symbols-outlined">edit</span>
                                         </button>
                                     </div>
@@ -219,11 +259,11 @@ const Stock = () => {
                         </div>
                     ))}
 
-                    {/* BOTÓN NUEVA SUBCATEGORÍA (Específico para esta categoría) */}
+                    {/* BOTÓN NUEVA SUBCATEGORÍA */}
                     {addingSubCategoryTo === categoria.id ? (
                         renderInlineForm(
                             () => setAddingSubCategoryTo(null), 
-                            (nombre) => console.log('Llamar a crearSubCategoria con:', categoria.id, nombre), 
+                            (nombre) => handleCrearSubcategoria(categoria.id, nombre), 
                             'Nombre subcategoría...'
                         )
                     ) : (
@@ -239,7 +279,8 @@ const Stock = () => {
                 {addingCategory ? (
                     renderInlineForm(
                         () => setAddingCategory(false), 
-                        (nombre) => handleCrearcategoria(nombre)
+                        (nombre) => handleCrearcategoria(nombre),
+                        'Nombre categoría...'
                     )
                 ) : (
                     <Button onClick={() => setAddingCategory(true)}>Nueva Categoría</Button>
@@ -250,17 +291,28 @@ const Stock = () => {
             <NuevoProductoModal
                 isOpen={showNuevoProducto}
                 onClose={() => setShowNuevoProducto(false)}
-                categorias={categorias} // Sugerencia: pasar las categorías al modal para el select
+                categorias={categorias}
+                onGuardar={handleCrearProducto}
             />
 
             <EdicionProductoModal
                 isOpen={showEdicionProducto}
-                onClose={() => setShowEdicionProducto(false)}
+                onClose={() => {
+                    setShowEdicionProducto(false);
+                    setProductoActivo(null);
+                }}
+                producto={productoActivo}
+                subcategorias={subcategoriasDelProducto}
+                onGuardar={handleEditarProducto}
+                onEliminar={handleEliminarProducto}
             />
 
             <ConfigurarStockModal
                 isOpen={showConfigStock}
                 onClose={() => setShowConfigStock(false)}
+                categorias={categorias}
+                onEliminarCategoria={handleEliminarCategoria}
+                onEliminarSubcategoria={handleEliminarSubcategoria}
             />
         </div>
     );
